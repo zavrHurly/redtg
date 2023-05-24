@@ -33,6 +33,9 @@ public class User implements Serializable {
     @Column(name = "registration")
     private Timestamp registrationTime;
 
+    @Column(name = "action")
+    private boolean actionBook;
+
     public User(Message msg) {
         id = msg.getChatId();
         firstName = msg.getChat().getFirstName();
