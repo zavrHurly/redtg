@@ -2,16 +2,20 @@ package com.example.red2.service;
 
 import com.example.red2.config.BotConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+
+import static com.example.red2.models.AnswersAndKeyboards.POSITIVE_BOOK_ANSWER_1;
 
 
 @Component
@@ -22,9 +26,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private BotHelper helper;
 
-    public TelegramBot(BotConfig botConfig) {
+    @Autowired
+    public TelegramBot(BotConfig botConfig, BotHelper helper) {
         this.botConfig = botConfig;
-        helper = new BotHelper();
+        this.helper = helper;
         List<BotCommand> commands = createBotMenu(helper.createBotMenu());
     }
 
@@ -40,9 +45,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if(helper.checkingForThePresenceOfTimeInTheText(update)) {
+        if(update.hasMessage()) helper.registerUser(update.getMessage());
+        if(helper.bookingAvailabilityCheck(update)) {
+            sendMessage(helper.createBook(update));
+        } else if(helper.checkingForThePresenceOfTimeInTheText(update)) {
             sendMessage(helper.putTheCoals(update));
-        } else {
+        } else if (helper.checkingForAButton(update)){
+            sendMessage(helper.createAButtonResponse(update));
+            sendMessage(helper.createMessageWithKeyboard(update.getCallbackQuery().getMessage().getChatId(), POSITIVE_BOOK_ANSWER_1, null));
+        } else if (helper.textPresenceCheck(update)){
             sendMessage(helper.createAnswer(update));
         }
     }
@@ -57,6 +68,14 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void sendMessage(SendMessage message) {
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            log.error("Error occurred: " + e.getMessage());
+        }
+    }
+
+    private void sendMessage(EditMessageText message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {

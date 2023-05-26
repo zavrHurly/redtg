@@ -3,8 +3,7 @@ package com.example.red2.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import javax.persistence.Column;
@@ -15,6 +14,8 @@ import java.sql.Timestamp;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class User implements Serializable {
 
     @Id
@@ -34,7 +35,7 @@ public class User implements Serializable {
     private Timestamp registrationTime;
 
     @Column(name = "action")
-    private boolean actionBook;
+    private boolean action;
 
     public User(Message msg) {
         id = msg.getChatId();
@@ -42,6 +43,7 @@ public class User implements Serializable {
         lastName = msg.getChat().getLastName();
         userName = msg.getChat().getUserName();
         registrationTime = new Timestamp(System.currentTimeMillis());
+        action = false;
 
     }
 }

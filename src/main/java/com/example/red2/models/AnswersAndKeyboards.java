@@ -13,13 +13,25 @@ public final class AnswersAndKeyboards {
 
     public static final String COAL_ANSWER = "Хорошо, как скоро тебя ждать?";
 
-    public static final String BOOK_ANSWER = "Нажми на одну из кнопок под сообщением, чтобы я понимал какой столик выбрать для тебя.";
+    public static final String BOOK_ANSWER_FOR_BUTTONS = "Нажми на одну из кнопок под сообщением, чтобы я понимал какой столик выбрать для тебя.";
 
     public static final String POSITIVE_RESULT_ANSWER = "Хорошо, до скорой встречи";
 
     public static final List<String> START_KEYBOARD = Arrays.asList("Поставить угли", "Забронировать стол");
 
     public static final List<String> COAL_KEYBOARD = Arrays.asList("5 минут", "10 минут", "15 минут", "20 минут");
+
+    public static final List<String> HOURS_KEYBOARD = Arrays.asList("1 час", "2 часа", "3 часа", "4 часа", "5 часов", "6 часов");
+
+    public static final String CREATE_BOOK_ANSWER = "Хорошо, сейчас кое-что уточню";
+
+    public static final String NEGATIVE_BOOK_ANSWER_1 = "К сожалению все места заняты на данное время, не хотите выбрать для себя другое время посещения?";
+
+    public static final String POSITIVE_BOOK_ANSWER_1 = "Напишите мне день, месяц и время, когда Вы планируете к нам прийти.";
+
+    public static final String POSITIVE_BOOK_ANSWER_2 = "Сколько человек будет?";
+
+    public static final String POSITIVE_BOOK_ANSWER_3 = "Как долго планируете у нас пребывать?";
 
     public static final String BUTTON_PS = "Стол с PS";
 
