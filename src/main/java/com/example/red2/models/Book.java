@@ -42,7 +42,7 @@ public class Book implements Serializable {
     private boolean ps;
 
     @Column(name = "duration")
-    private LocalTime duration;
+    private Long duration;
 
     @Column
     private String comment;

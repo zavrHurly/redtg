@@ -25,13 +25,17 @@ public final class AnswersAndKeyboards {
 
     public static final String CREATE_BOOK_ANSWER = "Хорошо, сейчас кое-что уточню";
 
-    public static final String NEGATIVE_BOOK_ANSWER_1 = "К сожалению все места заняты на данное время, не хотите выбрать для себя другое время посещения?";
+    public static final String NEGATIVE_ANSWER = "Я не могу тебя понять, попробуй еще раз";
 
-    public static final String POSITIVE_BOOK_ANSWER_1 = "Напишите мне день, месяц и время, когда Вы планируете к нам прийти.";
+    public static final String POSITIVE_BOOK_ANSWER_1 = "Напишите мне дату и время вашего посещения по примеру '20 02 16:00'Где 20-число, 02-месяц, 16:00-время";
 
     public static final String POSITIVE_BOOK_ANSWER_2 = "Сколько человек будет?";
 
     public static final String POSITIVE_BOOK_ANSWER_3 = "Как долго планируете у нас пребывать?";
+
+    public static final String POSITIVE_BOOK_ANSWER_4 = "Спасибо большое, будем ждать вас в указанное время)";
+
+    public static final String FINAL_POSITIVE_ANSWER = "Столик успешно забронирован";
 
     public static final String BUTTON_PS = "Стол с PS";
 

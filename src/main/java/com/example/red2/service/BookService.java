@@ -1,6 +1,7 @@
 package com.example.red2.service;
 
 import com.example.red2.models.Book;
+import com.example.red2.models.User;
 import com.example.red2.repository.BookRepository;
 import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +24,11 @@ public class BookService {
     public Book update(Book book, Long id) {
         Book bookFromDB = bookRepository.getBookByUserId(id);
         BeanUtils.copyProperties(book, bookFromDB, "id");
+        return book;
+    }
+
+    public Book save(Book book) {
+        bookRepository.save(book);
         return book;
     }
 }

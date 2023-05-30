@@ -5,12 +5,8 @@ import com.example.red2.models.User;
 import com.example.red2.repository.BookRepository;
 import com.example.red2.repository.UserRepository;
 import com.vdurmont.emoji.EmojiParser;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -23,7 +19,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -225,24 +220,25 @@ public class BotHelper {
             bookInProcessing.put(userId, book);
             return createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_3, HOURS_KEYBOARD);
         } else if(book.getDuration() == null) {
-            book.setDuration(messageToTime(update.getMessage().getText()));
+            book.setDuration(hoursInMessage(update.getMessage().getText()));
+            book.setFinishTime(book.getStartTime().plusHours(hoursInMessage(update.getMessage().getText())));
             bookInProcessing.put(userId, book);
-            return createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_2, null);
+            bookService.save(book);
+            userService.setAction(userId, false);
+            return createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_4, null);
         }
-        return null;
+        return createMessageWithKeyboard(userId, NEGATIVE_ANSWER, null);
     }
 
     private LocalDateTime messageToDateTime(String message) {
         LocalDateTime startTime = LocalDateTime.now();
         String [] timer = message.split("[^0-9]");
-        String dataTime = (startTime.getYear() + timer[0] + "-" + timer[1] + " " + timer[3] + ":" + timer[4] + "00" );
+        String dataTime = (startTime.getYear() +"-" + timer[1] + "-" + timer[0] + "T" + timer[2] + ":" + timer[3] + ":" + "00" );
         return LocalDateTime.parse(dataTime);
     }
 
-    private LocalTime messageToTime(String message) {
-
-        String [] timer = message.split("[^0-9]");
-        String dataTime = (timer[3] + ":" + timer[4] + "00" );
-        return LocalTime.parse(dataTime);
+    private long hoursInMessage(String message) {
+        String[] hourAndText = message.split(" ");
+        return Long.parseLong(hourAndText[0]);
     }
 }
