@@ -1,6 +1,8 @@
 package com.example.red2.service;
 
 import com.example.red2.config.BotConfig;
+import com.example.red2.service.handlers.AnswerHandler;
+import com.example.red2.service.handlers.Handler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,11 +28,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private BotHelper helper;
 
+    private final List<Handler> handlers;
+
     @Autowired
-    public TelegramBot(BotConfig botConfig, BotHelper helper) {
+    public TelegramBot(BotConfig botConfig, BotHelper helper, List<Handler> handlers) {
         this.botConfig = botConfig;
         this.helper = helper;
         List<BotCommand> commands = createBotMenu(helper.createBotMenu());
+        this.handlers = handlers;
     }
 
     @Override
@@ -45,17 +50,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if(update.hasMessage()) helper.registerUser(update.getMessage());
-        if(helper.bookingAvailabilityCheck(update)) {
-            sendMessage(helper.createBook(update));
-        } else if(helper.checkingForThePresenceOfTimeInTheText(update)) {
-            sendMessage(helper.putTheCoals(update));
-        } else if (helper.checkingForAButton(update)){
-            sendMessage(helper.createAButtonResponse(update));
-            sendMessage(helper.createMessageWithKeyboard(update.getCallbackQuery().getMessage().getChatId(), POSITIVE_BOOK_ANSWER_1, null));
-        } else if (helper.textPresenceCheck(update)){
-            sendMessage(helper.createAnswer(update));
-        }
     }
 
     private List<BotCommand> createBotMenu(List<BotCommand> commands) {
@@ -67,7 +61,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return commands;
     }
 
-    private void sendMessage(SendMessage message) {
+    public void sendMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {

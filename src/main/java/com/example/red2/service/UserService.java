@@ -1,15 +1,13 @@
 package com.example.red2.service;
 
-import com.example.red2.models.Book;
 import com.example.red2.models.User;
-import com.example.red2.repository.BookRepository;
 import com.example.red2.repository.UserRepository;
+import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
+@Service
 public class UserService {
 
     private final UserRepository userRepository;

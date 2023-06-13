@@ -8,15 +8,14 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
-@Table(name = "books")
+@Table(name = "Bookings")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Book implements Serializable {
+public class Booking implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -47,7 +46,7 @@ public class Book implements Serializable {
     @Column
     private String comment;
 
-    public Book(long userId, String userName) {
+    public Booking(long userId, String userName) {
         this.userId = userId;
         this.userName = userName;
     }
