@@ -1,5 +1,6 @@
 package com.example.red2.models;
 
+import com.example.red2.models.TO.BookingTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import static com.example.red2.service.DateTimeHelper.convertDateToLocalDateTime;
 
 @Entity
 @Table(name = "Bookings")
@@ -28,6 +32,7 @@ public class Booking implements Serializable {
     @Column(name = "userName")
     private String userName;
 
+
     @Column(name = "start")
     private LocalDateTime startTime;
 
@@ -46,8 +51,19 @@ public class Booking implements Serializable {
     @Column
     private String comment;
 
-    public Booking(long userId, String userName) {
-        this.userId = userId;
-        this.userName = userName;
+    public Booking(BookingTO to) {
+        this.userId = to.getUserId();
+        this.userName = to.getUserName();
+        this.finishTime = to.getFinishTime();
+        this.person = to.getPerson();
+        this.ps = to.isPs();
+        this.duration = to.getDuration();
+        this.comment = to.getComment();
+        this.startTime= convertDateToLocalDateTime(to.getStartDate(), to.getStartTime());
+
+    }
+
+    public void setFinishTime(LocalTime plusHours) {
+
     }
 }

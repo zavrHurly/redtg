@@ -3,6 +3,7 @@ package com.example.red2.service;
 import com.example.red2.config.BotConfig;
 import com.example.red2.service.handlers.AnswerHandler;
 import com.example.red2.service.handlers.Handler;
+import com.example.red2.service.handlers.RegisterHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,12 +31,15 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final List<Handler> handlers;
 
+    private final RegisterHandler register;
+
     @Autowired
-    public TelegramBot(BotConfig botConfig, BotHelper helper, List<Handler> handlers) {
+    public TelegramBot(BotConfig botConfig, BotHelper helper, List<Handler> handlers, RegisterHandler register) {
         this.botConfig = botConfig;
         this.helper = helper;
         List<BotCommand> commands = createBotMenu(helper.createBotMenu());
         this.handlers = handlers;
+        this.register = register;
     }
 
     @Override
@@ -50,6 +54,16 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if(register.isProcessed(update)) register.processed(update);
+        for(Handler handler: handlers) {
+            if(handler.isProcessed(update)) {
+                try {
+                    handler.processed(update);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     private List<BotCommand> createBotMenu(List<BotCommand> commands) {
@@ -59,31 +73,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Error setting command list: " + e);
         }
         return commands;
-    }
-
-    public void sendMessage(SendMessage message) {
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            log.error("Error occurred: " + e.getMessage());
-        }
-    }
-
-    private void sendMessage(EditMessageText message) {
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            log.error("Error occurred: " + e.getMessage());
-        }
-    }
-
-    private void sendMessage(List<SendMessage> messages) {
-        try {
-            for (SendMessage message : messages) {
-                execute(message);
-            }
-        } catch (TelegramApiException e) {
-            log.error("Error occurred: " + e.getMessage());
-        }
     }
 }

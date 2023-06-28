@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class RegisterHandler implements Handler{
+public class RegisterHandler extends AbstractHandler{
 
     private final UserService userService;
 
@@ -26,12 +26,11 @@ public class RegisterHandler implements Handler{
         return false;
     }
 
-    public List processed(Update update) {
+    public void processed(Update update) {
         if(userService.getById(update.getMessage().getChatId()) == null) {
             User newUser = new User(update.getMessage());
             userService.save(newUser);
             log.info("Сохранен пользователь {}", newUser);
         }
-        return null;
     }
 }

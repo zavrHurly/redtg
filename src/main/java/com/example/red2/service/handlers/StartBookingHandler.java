@@ -24,10 +24,9 @@ public class StartBookingHandler implements Handler {
     }
 
     @Override
-    public List processed(Update update) {
+    public void processed(Update update) {
         if(!service.getAction(update.getMessage().getChatId())){
             service.setAction(update.getMessage().getChatId(), true);
         }
-        return null;
     }
 }

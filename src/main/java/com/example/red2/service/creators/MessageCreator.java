@@ -1,11 +1,13 @@
 package com.example.red2.service.creators;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.List;
 
 @AllArgsConstructor
+@Component
 public class MessageCreator {
 
     private KeyboardAndInlineCreator keyboardAndInlineCreator;
