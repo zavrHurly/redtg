@@ -6,16 +6,14 @@ import com.example.red2.repository.BookingRepository;
 import com.example.red2.repository.UserRepository;
 import com.example.red2.service.DateTimeHelper;
 import com.example.red2.service.UserService;
-import com.example.red2.service.creators.KeyboardAndInlineCreator;
 import com.example.red2.service.creators.MessageCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,17 +29,18 @@ public class BookingHandler extends AbstractHandler {
 
     private final BookingRepository bookingRepository;
 
-    private HashMap<Long, BookingTO> bookingInProcessing = new HashMap<>();
+    private final HashMap<Long, BookingTO> bookingInProcessing = new HashMap<>();
 
-    private MessageCreator messageCreator;
+    private final MessageCreator messageCreator;
 
-    private DateTimeHelper helper;
+    private final DateTimeHelper helper;
 
     @Autowired
     public BookingHandler(UserRepository userRepository, BookingRepository bookingRepository) {
+        super(new DefaultBotOptions());
         userService = new UserService(userRepository);
         this.bookingRepository = bookingRepository;
-        messageCreator = new MessageCreator(new KeyboardAndInlineCreator());
+        messageCreator = new MessageCreator();
         helper = new DateTimeHelper();
     }
 

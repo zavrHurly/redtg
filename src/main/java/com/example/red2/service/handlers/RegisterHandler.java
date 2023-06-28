@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class RegisterHandler extends AbstractHandler{
+public class RegisterHandler implements Handler{
 
     private final UserService userService;
 

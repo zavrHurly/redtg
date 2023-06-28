@@ -1,19 +1,30 @@
 package com.example.red2.service.handlers;
 
-import lombok.AccessLevel;
+import com.example.red2.config.BotConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.telegram.telegrambots.bots.DefaultAbsSender;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 public abstract class AbstractHandler implements Handler {
 
-    protected TelegramLongPollingBot executor;
+    protected DefaultAbsSender executor;
+
+    protected BotConfig config = new BotConfig();
+
+    public AbstractHandler(DefaultBotOptions options){
+        executor = new DefaultAbsSender(options) {
+            @Override
+            public String getBotToken() {
+                return config.getToken();
+            }
+        };
+    }
 
 
     @Override

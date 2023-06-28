@@ -1,6 +1,7 @@
 package com.example.red2.service;
 
 import com.example.red2.config.BotConfig;
+import com.example.red2.service.handlers.AbstractHandler;
 import com.example.red2.service.handlers.AnswerHandler;
 import com.example.red2.service.handlers.Handler;
 import com.example.red2.service.handlers.RegisterHandler;
@@ -29,12 +30,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private BotHelper helper;
 
-    private final List<Handler> handlers;
+    private final List<AbstractHandler> handlers;
 
     private final RegisterHandler register;
 
     @Autowired
-    public TelegramBot(BotConfig botConfig, BotHelper helper, List<Handler> handlers, RegisterHandler register) {
+    public TelegramBot(BotConfig botConfig, BotHelper helper, List<AbstractHandler> handlers, RegisterHandler register) {
         this.botConfig = botConfig;
         this.helper = helper;
         List<BotCommand> commands = createBotMenu(helper.createBotMenu());

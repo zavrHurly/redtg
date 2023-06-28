@@ -6,11 +6,14 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Component
 public class MessageCreator {
 
     private KeyboardAndInlineCreator keyboardAndInlineCreator;
+
+    public MessageCreator(){
+        keyboardAndInlineCreator = new KeyboardAndInlineCreator();
+    }
 
     public SendMessage createMessageToAdmin(long chatId, String textToSend, String name, String userName) {
         SendMessage message = new SendMessage();

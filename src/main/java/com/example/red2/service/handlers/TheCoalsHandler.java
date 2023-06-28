@@ -1,17 +1,12 @@
 package com.example.red2.service.handlers;
 
 import com.example.red2.service.creators.MessageCreator;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.red2.models.AnswersAndKeyboards.POSITIVE_RESULT_ANSWER;
 import static com.example.red2.models.AnswersAndKeyboards.START_KEYBOARD;
@@ -20,11 +15,14 @@ import static com.example.red2.models.AnswersAndKeyboards.START_KEYBOARD;
 @PropertySource("application.properties")
 public class TheCoalsHandler extends AbstractHandler {
 
-    protected MessageCreator messageCreator;
+    protected MessageCreator messageCreator = new MessageCreator();
 
     @Value("${admin.chat}")
     private String adminChat;
 
+    public TheCoalsHandler() {
+        super(new DefaultBotOptions());
+    }
 
 
     public boolean isProcessed(Update update) {

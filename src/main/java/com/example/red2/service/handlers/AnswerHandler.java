@@ -2,14 +2,12 @@ package com.example.red2.service.handlers;
 
 import com.example.red2.repository.UserRepository;
 import com.example.red2.service.UserService;
-import com.example.red2.service.creators.KeyboardAndInlineCreator;
 import com.example.red2.service.creators.MessageCreator;
 import com.vdurmont.emoji.EmojiParser;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -18,18 +16,18 @@ import static com.example.red2.models.AnswersAndKeyboards.*;
 
 @Component
 @Slf4j
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class AnswerHandler extends AbstractHandler {
 
-    private MessageCreator messageCreator;
+    private final MessageCreator messageCreator;
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AnswerHandler(UserRepository userRepository) {
+        super(new DefaultBotOptions());
         this.userService = new UserService(userRepository);
-        messageCreator = new MessageCreator(new KeyboardAndInlineCreator());
+        messageCreator = new MessageCreator();
     }
 
     public boolean isProcessed(Update update) {

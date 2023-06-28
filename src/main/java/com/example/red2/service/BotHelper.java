@@ -30,16 +30,6 @@ public class BotHelper {
         return commands;
     }
 
-    public Handler getHandler(Update update, List <Handler> handlers) {
-        Handler handler = new AnswerHandler();
-        for (Handler workHandler: handlers) {
-            if(handler.isProcessed(update)){
-                handler = workHandler;
-            }
-        }
-        return handler;
-    }
-
     public boolean textPresenceCheck(Update update) {
         return update.hasMessage() & update.getMessage().hasText();
     }
