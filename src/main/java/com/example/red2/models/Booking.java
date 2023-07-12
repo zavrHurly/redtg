@@ -2,14 +2,13 @@ package com.example.red2.models;
 
 import com.example.red2.models.TO.BookingTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import static com.example.red2.service.DateTimeHelper.convertDateToLocalDateTime;
 
@@ -19,6 +18,7 @@ import static com.example.red2.service.DateTimeHelper.convertDateToLocalDateTime
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Booking implements Serializable {
 
     @Id
@@ -32,6 +32,8 @@ public class Booking implements Serializable {
     @Column(name = "userName")
     private String userName;
 
+    @Column(name = "date")
+    private LocalDate date;
 
     @Column(name = "start")
     private LocalDateTime startTime;
@@ -60,6 +62,9 @@ public class Booking implements Serializable {
         this.duration = to.getDuration();
         this.comment = to.getComment();
         this.startTime= convertDateToLocalDateTime(to.getStartDate(), to.getStartTime());
+        this.date = to.getStartDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
 
     }
 

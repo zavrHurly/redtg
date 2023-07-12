@@ -2,6 +2,7 @@ package com.example.red2.service.handlers;
 
 import com.example.red2.models.User;
 import com.example.red2.repository.UserRepository;
+import com.example.red2.service.TelegramBot;
 import com.example.red2.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class RegisterHandler implements Handler{
+public class RegisterHandler extends AbstractHandler{
 
     private final UserService userService;
 

@@ -1,6 +1,5 @@
 package com.example.red2.service.creators;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -17,7 +16,7 @@ import static com.example.red2.models.AnswersAndKeyboards.BUTTONS_NAME_DEFAULT;
 
 @Component
 @NoArgsConstructor
-public class KeyboardAndInlineCreator {
+public class KeyboardCreator {
 
     public ReplyKeyboardMarkup createKeyboard(List<String> buttons) {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();

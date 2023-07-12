@@ -7,7 +7,6 @@ import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -25,15 +24,14 @@ public class AnswerHandler extends AbstractHandler {
 
     @Autowired
     public AnswerHandler(UserRepository userRepository) {
-        super(new DefaultBotOptions());
         this.userService = new UserService(userRepository);
         messageCreator = new MessageCreator();
     }
 
     public boolean isProcessed(Update update) {
-        return update.hasMessage() & update.getMessage().hasText() &
-                !(update.getMessage().getText().contains("минут") || update.getMessage().getText().contains("час")) &
-                !userService.getAction(update.getMessage().getChatId());
+        return !userService.getAction(update.getMessage().getChatId()) & update.hasMessage() & update.getMessage().hasText() &
+                !(update.getMessage().getText().contains("минут") || update.getMessage().getText().contains("час") ||
+                update.getMessage().getText().equals("Стол с PS") || update.getMessage().getText().equals("Обычный стол"));
     }
 
     public void processed(Update update) throws TelegramApiException {
@@ -52,7 +50,7 @@ public class AnswerHandler extends AbstractHandler {
                 executor.execute(messageCreator.createMessageWithKeyboard(chatId, COAL_ANSWER, COAL_KEYBOARD));
                 break;
             case "Забронировать стол":
-                executor.execute(messageCreator.createMessageWithMarkupInline(chatId, BOOK_ANSWER_FOR_BUTTONS, true));
+                executor.execute(messageCreator.createMessageWithKeyboard(chatId, BOOK_ANSWER_FOR_BUTTONS, BOOKING_KEYBOARD));
                 break;
             default:
                 executor.execute(messageCreator.createMessageWithKeyboard(update.getMessage().getChatId(), ERROR_ANSWER, START_KEYBOARD));

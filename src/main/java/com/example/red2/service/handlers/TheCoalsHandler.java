@@ -1,5 +1,6 @@
 package com.example.red2.service.handlers;
 
+import com.example.red2.service.TelegramBot;
 import com.example.red2.service.creators.MessageCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -20,9 +21,6 @@ public class TheCoalsHandler extends AbstractHandler {
     @Value("${admin.chat}")
     private String adminChat;
 
-    public TheCoalsHandler() {
-        super(new DefaultBotOptions());
-    }
 
 
     public boolean isProcessed(Update update) {
