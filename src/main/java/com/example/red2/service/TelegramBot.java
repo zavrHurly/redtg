@@ -67,9 +67,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (handler.isProcessed(update)) {
                 try {
                     handler.processed(update);
-                } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
-                } catch (ParseException e) {
+                } catch (TelegramApiException | ParseException e) {
                     throw new RuntimeException(e);
                 }
             }

@@ -1,18 +1,14 @@
 package com.example.red2.service.creators;
 
 import com.example.red2.models.Booking;
-import com.example.red2.models.TO.BookingTO;
+import com.example.red2.models.to.BookingTO;
 import com.example.red2.service.BookingService;
 import com.example.red2.service.TelegramBot;
-import jakarta.annotation.PostConstruct;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -28,7 +24,7 @@ public class BookingCreator {
         messageCreator = new MessageCreator();
     }
 
-    public void sendResultMessage(Date startDate, long userId, TelegramBot executor) throws TelegramApiException {
+    public void sendResultMessageToDate(LocalDate startDate, long userId, TelegramBot executor) throws TelegramApiException {
         if(startDate == null){
             executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_1, DATES_KEYBOARD));
         } else {
@@ -36,7 +32,11 @@ public class BookingCreator {
         }
     }
 
-    public void sendResultMessage(LocalTime startTime, long userId, TelegramBot executor) throws TelegramApiException {
+    public void sendResultMessageToStart(long userId, TelegramBot executor) throws TelegramApiException {
+        executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_1, DATES_KEYBOARD));
+    }
+
+    public void sendResultMessageToTime(LocalTime startTime, long userId, TelegramBot executor) throws TelegramApiException {
         if(startTime == null){
             executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_15, null));
         } else {
@@ -44,18 +44,22 @@ public class BookingCreator {
         }
     }
 
-    public void sendResultMessage(Integer person, long userId, TelegramBot executor) throws TelegramApiException {
-        if(person == null){
+    public void sendResultMessageToCountPerson(Integer countPerson, long userId, TelegramBot executor) throws TelegramApiException {
+        if(countPerson == null){
             executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_2, null));
         } else {
             executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_3, HOURS_KEYBOARD));
         }
     }
 
-    public void sendResultMessage(Long duration, long userId, TelegramBot executor) throws TelegramApiException {
+    public void sendResultMessageToDuration(Integer duration, long userId, TelegramBot executor) throws TelegramApiException {
         if(duration == null) {
             executor.execute(messageCreator.createMessageWithKeyboard(userId, POSITIVE_BOOK_ANSWER_3, HOURS_KEYBOARD));
         }
+    }
+
+    public void sendResultMessageToBooking(TelegramBot executor, BookingTO bookingTO, String adminChat) throws TelegramApiException {
+        executor.execute(messageCreator.createMessageToAdmin(Long.parseLong(adminChat), new Booking(bookingTO)));
     }
 
     public void createBook(BookingTO to, long userId, TelegramBot executor, BookingService service) throws TelegramApiException {

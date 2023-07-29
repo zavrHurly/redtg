@@ -1,21 +1,14 @@
-package com.example.red2.models.TO;
+package com.example.red2.models.to;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-
-import static com.example.red2.service.DateTimeHelper.convertDateToLocalDateTime;
 
 @Getter
 @Setter
@@ -29,39 +22,45 @@ public class BookingTO {
 
     private LocalTime startTime;
 
-    private Date startDate;
+    private LocalDate startDate;
 
     private LocalDateTime finishTime;
 
-    private Integer person;
+    private Integer countPerson;
 
     private boolean ps;
 
-    private Long duration;
+    private Integer duration;
 
     private String comment;
+
+    private boolean finishStatus;
 
     public BookingTO(long userId, String userName) {
         this.userId = userId;
         this.userName = userName;
+        finishStatus = false;
     }
 
-    public void setPerson(String person) {
+    public void setCountPerson(String person) {
         try {
-            this.person = Integer.parseInt(person);
+            countPerson = Integer.parseInt(person);
         } catch (NumberFormatException e) {
-            this.person = null;
+            countPerson = null;
         }
     }
 
     public void setDuration(String duration) {
         try {
-            this.duration = Long.parseLong(duration);
+            this.duration = Integer.parseInt(duration);
             if(this.duration > 10) this.duration = null;
         } catch (NumberFormatException e) {
             this.duration = null;
         }
     }
 
+    public boolean getFinishStatus() {
+        return finishStatus;
+    }
 }
 

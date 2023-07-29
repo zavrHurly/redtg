@@ -1,6 +1,6 @@
 package com.example.red2.models;
 
-import com.example.red2.models.TO.BookingTO;
+import com.example.red2.models.to.BookingTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +16,8 @@ import static com.example.red2.service.DateTimeHelper.convertDateToLocalDateTime
 @Table(name = "Bookings")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
 public class Booking implements Serializable {
 
@@ -41,8 +41,8 @@ public class Booking implements Serializable {
     @Column(name = "finish")
     private LocalDateTime finishTime;
 
-    @Column(name = "person")
-    private Integer person;
+    @Column(name = "countPerson")
+    private Integer countPerson;
 
     @Column(name = "ps")
     private boolean ps;
@@ -57,14 +57,12 @@ public class Booking implements Serializable {
         this.userId = to.getUserId();
         this.userName = to.getUserName();
         this.finishTime = to.getFinishTime();
-        this.person = to.getPerson();
+        this.countPerson = to.getCountPerson();
         this.ps = to.isPs();
-        this.duration = to.getDuration();
+        this.duration = new Long (to.getDuration());
         this.comment = to.getComment();
-        this.startTime= convertDateToLocalDateTime(to.getStartDate(), to.getStartTime());
-        this.date = to.getStartDate().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+        this.startTime= to.getStartTime().atDate(to.getStartDate());
+        this.date = to.getStartDate();
 
     }
 

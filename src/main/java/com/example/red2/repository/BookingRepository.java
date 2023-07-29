@@ -16,7 +16,7 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     @Query("SELECT b.startTime FROM Booking b WHERE b.userId = :id")
     LocalDateTime getBookStartTime(Long id);
 
-    @Query("SELECT b.person FROM Booking b WHERE b.userId = :id")
+    @Query("SELECT b.countPerson FROM Booking b WHERE b.userId = :id")
     Integer getCountPersonByUserId(Long id);
 
     @Query("SELECT b.finishTime FROM Booking b WHERE b.userId = :id")

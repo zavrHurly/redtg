@@ -35,7 +35,7 @@ public class User implements Serializable {
     private Timestamp registrationTime;
 
     @Column(name = "action")
-    private boolean action;
+    private boolean action = false;
 
     public User(Message msg) {
         id = msg.getChatId();
