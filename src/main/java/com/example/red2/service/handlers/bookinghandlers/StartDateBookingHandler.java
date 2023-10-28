@@ -39,7 +39,9 @@ public class StartDateBookingHandler implements CreatorBookingHandler {
         } else {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                return LocalDate.parse(message, formatter);
+                LocalDate resultDate = LocalDate.parse(message, formatter);
+                if(resultDate.isBefore(LocalDate.now())) return null;
+                return resultDate;
             } catch (DateTimeParseException e) {
                 return null;
             }
